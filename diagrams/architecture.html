@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Contexta Architecture Diagram</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .mermaid {
+            background: white;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Contexta Medical Knowledge Graph - System Architecture</h1>
+    <div class="mermaid">
+graph TB
+    subgraph "User Layer"
+        USER[Medical Expert<br/>Validator]
+        API_USER[Paper Submitter<br/>API Client]
+    end
+
+    subgraph "AWS Cloud"
+        subgraph "Edge & CDN"
+            CF[CloudFront<br/>CDN]
+            R53[Route53<br/>DNS]
+        end
+
+        subgraph "Ingestion Layer"
+            APIGW1[API Gateway<br/>Ingestion API]
+            LAMBDA_ING[Lambda Function<br/>Paper Ingestion<br/>Python 3.11]
+            S3_PAPERS[S3 Bucket<br/>Raw Papers Storage<br/>papers/]
+            SQS[SQS Queue<br/>Processing Queue]
+        end
+
+        subgraph "ML Processing Layer"
+            LAMBDA_ORCH[Lambda Function<br/>Orchestrator<br/>Python 3.11]
+            LAMBDA_ML[Lambda Container<br/>BioBERT Model<br/>10GB Image<br/>3GB Memory]
+            LAMBDA_ENTITY[Lambda Function<br/>Entity Linker<br/>MeSH/RxNorm Lookup]
+            ECR[ECR<br/>Container Registry<br/>ML Model Images]
+        end
+
+        subgraph "Validation Layer"
+            S3_UI[S3 Bucket<br/>Static Web UI<br/>React App]
+            APIGW2[API Gateway<br/>Validation API]
+            LAMBDA_VAL[Lambda Function<br/>Validation Logic<br/>CRUD Operations]
+            COGNITO[Cognito User Pool<br/>Authentication]
+        end
+
+        subgraph "Data Storage"
+            RDS[(RDS PostgreSQL<br/>db.t4g.micro<br/>20GB GP3<br/>Apache AGE Extension<br/>Graph Queries)]
+            S3_TTL[S3 Bucket<br/>TTL Exports<br/>knowledge-graph/]
+        end
+
+        subgraph "Graph Processing"
+            LAMBDA_TTL[Lambda Function<br/>TTL Generator<br/>Triple Export]
+        end
+
+        subgraph "Monitoring & Config"
+            CW[CloudWatch<br/>Logs & Metrics]
+            SSM[Systems Manager<br/>Parameter Store<br/>Secrets]
+            EB[EventBridge<br/>Scheduled Jobs]
+        end
+
+        subgraph "Networking"
+            VPC[VPC<br/>10.0.0.0/16]
+            SUBNET_PRIV[Private Subnets<br/>Lambda, RDS]
+            SUBNET_PUB[Public Subnets<br/>NAT Gateway Optional]
+            SG_LAMBDA[Security Group<br/>Lambda Functions]
+            SG_RDS[Security Group<br/>RDS Database]
+            VPCE[VPC Endpoints<br/>S3, SQS, ECR<br/>Cost Optimization]
+        end
+    end
+
+    %% User Connections
+    API_USER -->|Submit Paper| R53
+    USER -->|Validate Results| R53
+    R53 -->|Route| APIGW1
+    R53 -->|Route| CF
+
+    %% Ingestion Flow
+    APIGW1 -->|Trigger| LAMBDA_ING
+    LAMBDA_ING -->|Store Paper| S3_PAPERS
+    LAMBDA_ING -->|Queue Message| SQS
+    LAMBDA_ING -->|Log| CW
+
+    %% ML Processing Flow
+    SQS -->|Poll| LAMBDA_ORCH
+    LAMBDA_ORCH -->|Invoke| LAMBDA_ML
+    LAMBDA_ORCH -->|Get Config| SSM
+    LAMBDA_ML -->|Pull Image| ECR
+    LAMBDA_ML -->|Extract Relations| LAMBDA_ENTITY
+    LAMBDA_ENTITY -->|Save Results| RDS
+    LAMBDA_ML -->|Log| CW
+
+    %% Validation Flow
+    CF -->|Serve| S3_UI
+    S3_UI -->|API Calls| APIGW2
+    APIGW2 -->|Authenticate| COGNITO
+    APIGW2 -->|Trigger| LAMBDA_VAL
+    LAMBDA_VAL -->|Query/Update| RDS
+    LAMBDA_VAL -->|Read Paper| S3_PAPERS
+
+    %% Graph Generation Flow
+    LAMBDA_VAL -->|Trigger on Approval| LAMBDA_TTL
+    EB -->|Scheduled Export| LAMBDA_TTL
+    LAMBDA_TTL -->|Query Graph| RDS
+    LAMBDA_TTL -->|Generate TTL| S3_TTL
+    LAMBDA_TTL -->|Log| CW
+
+    %% Network Placement
+    LAMBDA_ING -.->|Runs in| SUBNET_PRIV
+    LAMBDA_ORCH -.->|Runs in| SUBNET_PRIV
+    LAMBDA_ML -.->|Runs in| SUBNET_PRIV
+    LAMBDA_ENTITY -.->|Runs in| SUBNET_PRIV
+    LAMBDA_VAL -.->|Runs in| SUBNET_PRIV
+    LAMBDA_TTL -.->|Runs in| SUBNET_PRIV
+    RDS -.->|Deployed in| SUBNET_PRIV
+
+    SG_LAMBDA -.->|Protect| LAMBDA_VAL
+    SG_RDS -.->|Allow from| SG_LAMBDA
+
+    LAMBDA_ML -.->|Access via| VPCE
+
+    classDef userClass fill:#e1f5ff,stroke:#01579b,stroke-width:2px
+    classDef apiClass fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    classDef computeClass fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef storageClass fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+    classDef mlClass fill:#ffe0b2,stroke:#e65100,stroke-width:2px
+    classDef networkClass fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    classDef monitorClass fill:#e0e0e0,stroke:#212121,stroke-width:2px
+
+    class USER,API_USER userClass
+    class APIGW1,APIGW2,CF,R53 apiClass
+    class LAMBDA_ING,LAMBDA_ORCH,LAMBDA_VAL,LAMBDA_TTL computeClass
+    class S3_PAPERS,S3_UI,S3_TTL,RDS storageClass
+    class LAMBDA_ML,LAMBDA_ENTITY,ECR mlClass
+    class VPC,SUBNET_PRIV,SUBNET_PUB,SG_LAMBDA,SG_RDS,VPCE networkClass
+    class CW,SSM,EB,SQS monitorClass
+    </div>
+</body>
+</html>

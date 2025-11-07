@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>COST-ESTIMATE</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.0/github-markdown.min.css" />
+</head>
+<body>
+<h1 id="cost-estimate">Cost Estimate</h1>
+<p><strong>Region</strong>: us-east-1 <strong>Scale</strong>: ~30
+papers/month (1 per day) <strong>Last Updated</strong>: November
+2025</p>
+<h2 id="monthly-breakdown">Monthly Breakdown</h2>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>What It Does</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RDS PostgreSQL (db.t4g.micro)</td>
+<td>Knowledge graph database</td>
+<td>$12.41</td>
+</tr>
+<tr>
+<td>RDS Storage (20 GB)</td>
+<td>Database storage + backups</td>
+<td>$4.30</td>
+</tr>
+<tr>
+<td>VPC Endpoints (ECR, SQS)</td>
+<td>Private network access</td>
+<td>$21.91</td>
+</tr>
+<tr>
+<td>CloudWatch Logs</td>
+<td>Application logging</td>
+<td>$2.53</td>
+</tr>
+<tr>
+<td>Lambda + ECR</td>
+<td>ML processing (mostly free tier)</td>
+<td>$1.05</td>
+</tr>
+<tr>
+<td>S3 Storage</td>
+<td>Papers, UI, exports</td>
+<td>$0.13</td>
+</tr>
+<tr>
+<td>Route53 (optional)</td>
+<td>Custom domain</td>
+<td>$0.50</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td></td>
+<td><strong>~$42-43/month</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Most other services (API Gateway, Cognito, SQS, CloudFront) fall
+under AWS free tier.</p>
+<h2 id="why-this-cheap">Why This Cheap?</h2>
+<ul>
+<li><strong>Serverless</strong>: Lambda only runs when processing
+papers, not 24/7</li>
+<li><strong>VPC Endpoints</strong>: $22/month vs $35/month for NAT
+Gateway</li>
+<li><strong>Single-AZ RDS</strong>: Half the cost of Multi-AZ (fine for
+MVP)</li>
+<li><strong>Small instance</strong>: db.t4g.micro is plenty for &lt;1M
+graph nodes</li>
+<li><strong>Free tiers</strong>: API Gateway, Cognito, SQS, CloudFront
+all free</li>
+</ul>
+<p>If we used EC2 instead of serverless: <strong>~$120/month</strong>
+(3x more expensive)</p>
+<h2 id="cost-per-paper">Cost Per Paper</h2>
+<p>Processing 30 papers costs about $42/month, which breaks down to:</p>
+<ul>
+<li>Fixed costs: ~$40/month (RDS, VPC endpoints, monitoring)</li>
+<li>Variable costs: ~$2/month for 30 papers</li>
+</ul>
+<p><strong>Per paper</strong>: About $0.002 in variable costs (basically
+free to process more)</p>
+<p>This means you could process 10x more papers (~300/month) for only
+~$45/month total.</p>
+<h2 id="scaling-costs">Scaling Costs</h2>
+<table>
+<thead>
+<tr>
+<th>Papers/Day</th>
+<th>Papers/Month</th>
+<th>Est. Monthly Cost</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>30</td>
+<td>$42</td>
+<td>Current plan</td>
+</tr>
+<tr>
+<td>10</td>
+<td>300</td>
+<td>$45</td>
+<td>Same infrastructure</td>
+</tr>
+<tr>
+<td>30</td>
+<td>900</td>
+<td>$50</td>
+<td>Might upgrade RDS</td>
+</tr>
+<tr>
+<td>100</td>
+<td>3,000</td>
+<td>$90</td>
+<td>Need db.t4g.small</td>
+</tr>
+</tbody>
+</table>
+<p>The architecture handles 10x growth with minimal cost increase
+because most costs are fixed (database, networking).</p>
+<h2 id="what-changes-after-free-tier-expires">What Changes After Free
+Tier Expires?</h2>
+<p>Some AWS services have 12-month free tiers. After year one:</p>
+<ul>
+<li>Lambda: +$0.50/month</li>
+<li>API Gateway: +$1.20/month</li>
+<li>CloudFront: +$1.00/month</li>
+<li>S3: +$0.37/month</li>
+</ul>
+<p><strong>Year 2 cost</strong>: ~$46/month (not a huge jump)</p>
+<h2 id="at-production-scale-1000-papersday">At Production Scale (1,000
+papers/day)</h2>
+<p>You’d need different infrastructure:</p>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Config</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SageMaker</td>
+<td>GPU inference</td>
+<td>$250-400</td>
+</tr>
+<tr>
+<td>Neptune</td>
+<td>Graph database</td>
+<td>$350</td>
+</tr>
+<tr>
+<td>ElastiCache</td>
+<td>Query caching</td>
+<td>$15</td>
+</tr>
+<tr>
+<td>RDS</td>
+<td>Metadata</td>
+<td>$150</td>
+</tr>
+<tr>
+<td>Lambda</td>
+<td>Orchestration</td>
+<td>$50</td>
+</tr>
+<tr>
+<td>S3 + Networking</td>
+<td>~1 TB storage</td>
+<td>$125</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td></td>
+<td><strong>~$1,000/month</strong></td>
+</tr>
+</tbody>
+</table>
+<p>That’s $0.033 per paper at scale.</p>
+<h2 id="budget-recommendations">Budget Recommendations</h2>
+<p><strong>Months 1-6</strong>: Budget $50/month (includes buffer)
+<strong>Months 7-12</strong>: Budget $75/month (room for experiments)
+<strong>Year 1 Total</strong>: ~$750</p>
+<p>Set up billing alerts at $30, $50, and $75 to catch surprises.</p>
+<h2 id="summary">Summary</h2>
+<ul>
+<li>Start at <strong>$42/month</strong> for MVP</li>
+<li>Scales to 10x papers with &lt;5% cost increase</li>
+<li>Way cheaper than EC2 or fully managed services</li>
+<li>At production scale (1K papers/day): ~$1,000/month</li>
+</ul>
+<p>The serverless approach is perfect for MVP. Switch to SageMaker +
+Neptune only when consistently processing 100+ papers/day.</p>
+</body>
+</html>
