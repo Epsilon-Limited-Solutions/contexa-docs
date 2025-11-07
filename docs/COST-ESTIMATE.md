@@ -62,22 +62,6 @@ Some AWS services have 12-month free tiers. After year one:
 
 **Year 2 cost**: ~$46/month (not a huge jump)
 
-## Ways to Save More
-
-**Now:**
-- Already using VPC endpoints instead of NAT (saves $13/month)
-- Already using single-AZ RDS (saves $12/month)
-- Already using Lambda not EC2 (saves $50/month)
-
-**After 6 months:**
-- Buy RDS Reserved Instance: saves $5/month ($60/year)
-- Enable S3 Intelligent-Tiering: saves ~$0.50/month
-
-**At bigger scale:**
-- SageMaker Savings Plan: 40-60% off GPU costs
-- Neptune Reserved Instances: 40% off
-- EC2 Spot instances: 70% off batch jobs
-
 ## At Production Scale (1,000 papers/day)
 
 You'd need different infrastructure:
@@ -102,22 +86,11 @@ That's $0.033 per paper at scale.
 
 Set up billing alerts at $30, $50, and $75 to catch surprises.
 
-## ROI: Why This Matters
-
-**Manual approach**: A person extracting drug-disease relationships from papers might do 5 papers per day at $50/hour = $400/day or ~$8,000/month for 100 papers.
-
-**This system**: Process 100 papers for $42/month + validation time (~30 hours at $50/hour = $1,500).
-
-**Total**: ~$1,542/month vs $8,000/month manual = **81% cost reduction**
-
-And you get a structured, queryable knowledge graph instead of spreadsheets.
-
 ## Summary
 
 - Start at **$42/month** for MVP
 - Scales to 10x papers with <5% cost increase
 - Way cheaper than EC2 or fully managed services
-- After 6 months, buy Reserved Instance to save another $60/year
 - At production scale (1K papers/day): ~$1,000/month
 
 The serverless approach is perfect for MVP. Switch to SageMaker + Neptune only when consistently processing 100+ papers/day.
