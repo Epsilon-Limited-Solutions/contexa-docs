@@ -2,7 +2,7 @@
 
 **Region**: us-east-1
 **Scale**: ~30 papers/month (1 per day)
-**Last Updated**: January 2025
+**Last Updated**: November 2025
 
 ## Monthly Breakdown
 
