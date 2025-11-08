@@ -51,17 +51,6 @@ This means you could process 10x more papers (~300/month) for only ~$45/month to
 
 The architecture handles 10x growth with minimal cost increase because most costs are fixed (database, networking).
 
-## What Changes After Free Tier Expires?
-
-Some AWS services have 12-month free tiers. After year one:
-
-- Lambda: +$0.50/month
-- API Gateway: +$1.20/month
-- CloudFront: +$1.00/month
-- S3: +$0.37/month
-
-**Year 2 cost**: ~$46/month (not a huge jump)
-
 ## At Production Scale (1,000 papers/day)
 
 You'd need different infrastructure:
@@ -77,20 +66,3 @@ You'd need different infrastructure:
 | **Total** | | **~$1,000/month** |
 
 That's $0.033 per paper at scale.
-
-## Budget Recommendations
-
-**Months 1-6**: Budget $50/month (includes buffer)
-**Months 7-12**: Budget $75/month (room for experiments)
-**Year 1 Total**: ~$750
-
-Set up billing alerts at $30, $50, and $75 to catch surprises.
-
-## Summary
-
-- Start at **$42/month** for MVP
-- Scales to 10x papers with <5% cost increase
-- Way cheaper than EC2 or fully managed services
-- At production scale (1K papers/day): ~$1,000/month
-
-The serverless approach is perfect for MVP. Switch to SageMaker + Neptune only when consistently processing 100+ papers/day.

@@ -295,16 +295,6 @@ free to process more)</p>
 </table>
 <p>The architecture handles 10x growth with minimal cost increase
 because most costs are fixed (database, networking).</p>
-<h2 id="what-changes-after-free-tier-expires">What Changes After Free
-Tier Expires?</h2>
-<p>Some AWS services have 12-month free tiers. After year one:</p>
-<ul>
-<li>Lambda: +$0.50/month</li>
-<li>API Gateway: +$1.20/month</li>
-<li>CloudFront: +$1.00/month</li>
-<li>S3: +$0.37/month</li>
-</ul>
-<p><strong>Year 2 cost</strong>: ~$46/month (not a huge jump)</p>
 <h2 id="at-production-scale-1000-papersday">At Production Scale (1,000
 papers/day)</h2>
 <p>You’d need different infrastructure:</p>
@@ -355,19 +345,5 @@ papers/day)</h2>
 </tbody>
 </table>
 <p>That’s $0.033 per paper at scale.</p>
-<h2 id="budget-recommendations">Budget Recommendations</h2>
-<p><strong>Months 1-6</strong>: Budget $50/month (includes buffer)
-<strong>Months 7-12</strong>: Budget $75/month (room for experiments)
-<strong>Year 1 Total</strong>: ~$750</p>
-<p>Set up billing alerts at $30, $50, and $75 to catch surprises.</p>
-<h2 id="summary">Summary</h2>
-<ul>
-<li>Start at <strong>$42/month</strong> for MVP</li>
-<li>Scales to 10x papers with &lt;5% cost increase</li>
-<li>Way cheaper than EC2 or fully managed services</li>
-<li>At production scale (1K papers/day): ~$1,000/month</li>
-</ul>
-<p>The serverless approach is perfect for MVP. Switch to SageMaker +
-Neptune only when consistently processing 100+ papers/day.</p>
 </body>
 </html>
